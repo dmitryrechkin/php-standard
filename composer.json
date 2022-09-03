@@ -1,0 +1,42 @@
+{
+    "name": "dmitryrechkin/php-standard",
+	"type": "php-standard",
+    "description": "Dmitry Rechkin's - PHP Coding Standard",
+    "keywords": [
+    ],
+    "license": "AGPL-3.0-only",
+    "authors": [
+        {
+            "name": "Dmitry Rechkin",
+            "email": "rechkin@gmail.com",
+            "homepage": "https://github.com/dmitryrechkin/"
+        }
+    ],
+    "require": {
+        "php": ">=7.3",
+        "overtrue/phplint": "^3.0",
+        "squizlabs/php_codesniffer": "*",
+        "sirbrillig/phpcs-variable-analysis": "^2.11",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2",
+        "slevomat/coding-standard": "7.2.1"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.0.x-dev"
+        }
+    },
+    "require-dev": {
+        "overtrue/phplint": "^3.0",
+        "php-parallel-lint/php-parallel-lint": "^1.3"
+    },
+    "bin": [
+        "bin/phpcs.sh",
+        "bin/phpcbf.sh",
+        "bin/phplint.sh"
+    ],
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}

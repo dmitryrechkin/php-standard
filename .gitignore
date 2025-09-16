@@ -1,8 +1,9 @@
 vendor/
 composer.lock
-phpunit.xml
 .DS_Store
 */.DS_Store
 */*/.DS_Store
 */*/*/.DS_Store
 .phplint-cache
+.phpunit.result.cache
+tests/fixtures/

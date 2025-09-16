@@ -7,6 +7,7 @@
  * 1. ReferencedName::__construct TypeError when attribute_closer is null
  * 2. AssertAnnotation::__construct TypeError with wrong parameter types
  * 3. PropertyHelper undefined index: bracket_closer
+ * 4. DisallowImplicitArrayCreationSniff undefined index: bracket_closer
  */
 
 $fixes = [
@@ -38,6 +39,13 @@ $fixes = [
 		'replace' => '&& isset($tokens[$previousCurlyBracketPointer][\'bracket_closer\']) && $tokens[$previousCurlyBracketPointer][\'bracket_closer\'] > $variablePointer',
 		'check' => 'isset($tokens[$previousCurlyBracketPointer][\'bracket_closer\'])',
 		'description' => 'PropertyHelper bracket_closer undefined index fix'
+	],
+	[
+		'file' => 'vendor/slevomat/coding-standard/SlevomatCodingStandard/Sniffs/Arrays/DisallowImplicitArrayCreationSniff.php',
+		'search' => '$assignmentPointer = TokenHelper::findNextEffective($phpcsFile, $tokens[$bracketOpenerPointer][\'bracket_closer\'] + 1);',
+		'replace' => '$assignmentPointer = TokenHelper::findNextEffective($phpcsFile, (isset($tokens[$bracketOpenerPointer][\'bracket_closer\']) ? $tokens[$bracketOpenerPointer][\'bracket_closer\'] : $bracketOpenerPointer) + 1);',
+		'check' => 'isset($tokens[$bracketOpenerPointer][\'bracket_closer\'])',
+		'description' => 'DisallowImplicitArrayCreationSniff bracket_closer undefined index fix'
 	]
 ];
 

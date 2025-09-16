@@ -356,7 +356,7 @@ class StandardValidationTest extends TestCase
 		$this->assertStringNotContainsString(
 			'Undefined index: bracket_closer',
 			$outputText,
-			'SlevomatCodingStandard PropertyHelper bracket_closer bug should be fixed'
+			'SlevomatCodingStandard bracket_closer bugs should be fixed'
 		);
 		
 		// Clean up

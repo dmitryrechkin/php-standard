@@ -293,11 +293,11 @@ class StandardValidationTest extends TestCase
 			);
 
 			exec($command, $output, $returnCode);
-			
+
 			$outputText = implode("\n", $output);
 			$this->assertStringNotContainsString(
-				'Fatal error', 
-				$outputText, 
+				'Fatal error',
+				$outputText,
 				'Rule ' . $rule . ' should not cause fatal errors. Output: ' . $outputText
 			);
 			$this->assertStringNotContainsString(
@@ -309,6 +309,52 @@ class StandardValidationTest extends TestCase
 
 		// Clean up
 		unlink($testFile);
+	}
+
+	/**
+	 * Test SlevomatCodingStandard bug fix for ReferencedName TypeError
+	 *
+	 * @return void
+	 */
+	public function testSlevomatBugFix(): void
+	{
+		$testCode = $this->getSlevomatBugTriggeringCode();
+		
+		// Create a temporary file with the test code
+		$tempFile = tempnam(sys_get_temp_dir(), 'slevomat_test_') . '.php';
+		file_put_contents($tempFile, $testCode);
+		
+		// Run PHPCS with our standard and check for the specific error
+		$command = sprintf(
+			'cd %s && vendor/bin/phpcs %s --standard=php-standard.xml -d memory_limit=512M 2>&1',
+			escapeshellarg(__DIR__ . '/..'),
+			escapeshellarg($tempFile)
+		);
+		
+		exec($command, $output, $returnCode);
+		$outputText = implode("\n", $output);
+		
+		// The bug should be fixed, so there should be no Fatal error
+		$this->assertStringNotContainsString(
+			'Fatal error',
+			$outputText,
+			'SlevomatCodingStandard bug should be fixed. Output: ' . $outputText
+		);
+		
+		$this->assertStringNotContainsString(
+			'TypeError: Argument 3 passed to SlevomatCodingStandard',
+			$outputText,
+			'SlevomatCodingStandard ReferencedName bug should be fixed'
+		);
+		
+		$this->assertStringNotContainsString(
+			'TypeError: Return value of SlevomatCodingStandard\Helpers\ScopeHelper::getRootPointer() must be of the type int, null returned',
+			$outputText,
+			'SlevomatCodingStandard ScopeHelper bug should be fixed'
+		);
+		
+		// Clean up
+		unlink($tempFile);
 	}
 
 	/**
@@ -614,7 +660,12 @@ class LargeFileClass
 
 		// Generate many methods to create a large file
 		for ($i = 1; $i <= 50; $i++) {
-			$code .= "\n\t/**\n\t * Generated method " . $i . "\n\t *\n\t * @param string \$param" . $i . " Parameter " . $i . "\n\t * @return string\n\t */\n\tpublic function generatedMethod" . $i . "(string \$param" . $i . "): string\n\t{\n\t\t\$result = \"Method " . $i . " result\";\n\t\t\$array" . $i . " = [];\n\t\t\n\t\tfor (\$j = 1; \$j <= 10; \$j++) {\n\t\t\t\$array" . $i . "[\$j] = \$param" . $i . " . \$j;\n\t\t}\n\t\t\n\t\treturn \$result . implode(\",\", \$array" . $i . ");\n\t}\n";
+			$code .= "\n\t/**\n\t * Generated method " . $i . "\n\t *\n\t * @param string \$param" . $i
+				. ' Parameter ' . $i . "\n\t * @return string\n\t */\n\tpublic function generatedMethod" . $i
+				. '(string $param' . $i . "): string\n\t{\n\t\t\$result = \"Method " . $i . " result\";\n\t\t\$array"
+				. $i . " = [];\n\t\t\n\t\tfor (\$j = 1; \$j <= 10; \$j++) {\n\t\t\t\$array" . $i
+				. '[$j] = $param' . $i . " . \$j;\n\t\t}\n\t\t\n\t\treturn \$result . implode(\",\", \$array"
+				. $i . ");\n\t}\n";
 		}
 
 		$code .= '}
@@ -691,6 +742,64 @@ class SlevomatTestClass
 	public function anotherMethod($value)
 	{
 		return $value;
+	}
+}';
+	}
+
+	/**
+	 * Returns code that triggers the SlevomatCodingStandard bug
+	 */
+	private function getSlevomatBugTriggeringCode(): string
+	{
+		return '<?php
+
+declare(strict_types=1);
+
+namespace OneTeamSoftware\\WC\\MultiVendorBridge;
+
+use OneTeamSoftware\\WC\\MultiVendorBridge\\Adapter\\AbstractAdapter;
+
+/**
+ * MultiVendor Bridge class that triggers the SlevomatCodingStandard bug
+ * due to dynamic includes and specific code patterns
+ */
+class MultiVendorBridge
+{
+	/**
+	 * @var string[] list of adapter class names
+	 */
+	private static array $adapterNames = [
+		"Wcfm",
+		"Dokan", 
+		"Yith",
+		"Mvx",
+		"Wcpv",
+		"PostAuthor",
+	];
+
+	/**
+	 * returns matching adapter
+	 *
+	 * @return AbstractAdapter
+	 */
+	public static function createInstance(): ?AbstractAdapter
+	{
+		foreach (self::$adapterNames as $adapterName) {
+			$adapterFilePath = __DIR__ . "/Adapter/" . $adapterName . ".php";
+			if (file_exists($adapterFilePath)) {
+				include_once($adapterFilePath);
+
+				$adapterClassName = "\\\\OneTeamSoftware\\\\WC\\\\MultiVendorBridge\\\\Adapter\\\\" . $adapterName;
+				if (class_exists($adapterClassName)) {
+					$adapter = new $adapterClassName();
+					if (method_exists($adapter, "isCompatible") && $adapter->isCompatible()) {
+						return $adapter;
+					}
+				}
+			}
+		}
+
+		return null;
 	}
 }';
 	}

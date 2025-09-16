@@ -6,13 +6,13 @@ BIN_DIR=$SCRIPT_DIR/../../../bin
 STANDARD_FILEPATH=$SCRIPT_DIR/../php-standard.xml
 
 if [[ -d $PROJECT_DIR/src ]]; then
-	$BIN_DIR/phpcbf -d memory_limit=512M --cache --standard=$STANDARD_FILEPATH $PROJECT_DIR/src
+	$BIN_DIR/phpcbf -d memory_limit=1G --cache --standard=$STANDARD_FILEPATH $PROJECT_DIR/src
 fi
 
 if [[ -d $PROJECT_DIR/includes ]]; then
-	$BIN_DIR/phpcbf -d memory_limit=512M --cache --standard=$STANDARD_FILEPATH $PROJECT_DIR/includes
+	$BIN_DIR/phpcbf -d memory_limit=1G --cache --standard=$STANDARD_FILEPATH $PROJECT_DIR/includes
 fi
 
 if [[ -d $PROJECT_DIR/tests ]]; then
-	$BIN_DIR/phpcbf -d memory_limit=512M --cache --standard=$STANDARD_FILEPATH $PROJECT_DIR/tests
+	$BIN_DIR/phpcbf -d memory_limit=1G --cache --standard=$STANDARD_FILEPATH $PROJECT_DIR/tests
 fi

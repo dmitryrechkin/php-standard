@@ -353,6 +353,12 @@ class StandardValidationTest extends TestCase
 			'SlevomatCodingStandard ScopeHelper bug should be fixed'
 		);
 		
+		$this->assertStringNotContainsString(
+			'Undefined index: bracket_closer',
+			$outputText,
+			'SlevomatCodingStandard PropertyHelper bracket_closer bug should be fixed'
+		);
+		
 		// Clean up
 		unlink($tempFile);
 	}

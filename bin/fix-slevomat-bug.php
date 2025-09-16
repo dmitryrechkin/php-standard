@@ -42,10 +42,10 @@ $fixes = [
 	],
 	[
 		'file' => 'vendor/slevomat/coding-standard/SlevomatCodingStandard/Sniffs/Arrays/DisallowImplicitArrayCreationSniff.php',
-		'search' => '$assignmentPointer = TokenHelper::findNextEffective($phpcsFile, $tokens[$bracketOpenerPointer][\'bracket_closer\'] + 1);',
-		'replace' => '$assignmentPointer = TokenHelper::findNextEffective($phpcsFile, (isset($tokens[$bracketOpenerPointer][\'bracket_closer\']) ? $tokens[$bracketOpenerPointer][\'bracket_closer\'] : $bracketOpenerPointer) + 1);',
-		'check' => 'isset($tokens[$bracketOpenerPointer][\'bracket_closer\'])',
-		'description' => 'DisallowImplicitArrayCreationSniff bracket_closer undefined index fix'
+		'search' => 'if ($tokens[$assignmentPointer][\'code\'] !== T_EQUAL) {',
+		'replace' => 'if ($assignmentPointer === null || $tokens[$assignmentPointer][\'code\'] !== T_EQUAL) {',
+		'check' => '$assignmentPointer === null ||',
+		'description' => 'DisallowImplicitArrayCreationSniff null assignmentPointer fix'
 	]
 ];
 

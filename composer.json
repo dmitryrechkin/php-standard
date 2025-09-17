@@ -34,12 +34,6 @@
         "bin/phplint.sh"
     ],
     "scripts": {
-        "post-install-cmd": [
-            "@fix-slevomat-bug"
-        ],
-        "post-update-cmd": [
-            "@fix-slevomat-bug"
-        ],
         "fix-slevomat-bug": "php bin/fix-slevomat-bug.php",
         "test": [
             "@test:lint",

@@ -1,18 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ruleset name="StablePHPStandard">
-	<description>Stable PHP coding standard using only built-in phpcs rules - no external dependencies</description>
+<ruleset name="DmitryRechkin">
+	<description>Coding standard based on PSR-12 with some additions.</description>
 
 	<arg name="tab-width" value="4"/>
 
-	<!-- Base PSR-12 standard with tab indentation override -->
+	<!-- Include the whole PSR-12 standard -->
 	<rule ref="PSR12">
-		<!-- Override tab indentation preference - use tabs instead of spaces -->
+		<!-- exclude usage of spaces for indentation-->
 		<exclude name="Generic.WhiteSpace.DisallowTabIndent"/>
-		<!-- Allow side effects for flexibility in some files -->
 		<exclude name="PSR1.Files.SideEffects"/>
+		<!-- Allow decorative asterisks in file header comments only -->
+		<exclude name="Squiz.Commenting.DocCommentAlignment"/>
+		<exclude name="Squiz.Commenting.BlockComment"/>
 	</rule>
 
-	<!-- Enforce tab indentation (4 spaces equivalent) -->
+	<rule ref="PSR12"/>
+
+	<!-- https://github.com/sirbrillig/VariableAnalysis/ -->
+	<rule ref="VariableAnalysis"/>
+	<rule ref="VariableAnalysis.CodeAnalysis.VariableAnalysis">
+		<properties>
+			<property name="allowUnusedFunctionParameters" value="true"/>
+		</properties>
+	</rule>
+
+	<!-- Use tabs for indentation-->
 	<rule ref="Generic.WhiteSpace.DisallowSpaceIndent"/>
 	<rule ref="Generic.WhiteSpace.ScopeIndent">
 		<properties>
@@ -21,154 +33,162 @@
 		</properties>
 	</rule>
 
-	<!-- Array formatting rules -->
+	<!-- Arrays -->
 	<rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
 	<rule ref="Generic.Arrays.ArrayIndent"/>
 	<rule ref="Squiz.Arrays.ArrayBracketSpacing"/>
-	<rule ref="Squiz.Arrays.ArrayDeclaration">
-		<!-- Only enforce specific sub-rules to avoid conflicts -->
-		<exclude name="Squiz.Arrays.ArrayDeclaration.SingleLineNotAllowed"/>
-		<exclude name="Squiz.Arrays.ArrayDeclaration.MultiLineNotAllowed"/>
-		<exclude name="Squiz.Arrays.ArrayDeclaration.DoubleArrowNotAligned"/>
-		<exclude name="Squiz.Arrays.ArrayDeclaration.ValueNotAligned"/>
-		<exclude name="Squiz.Arrays.ArrayDeclaration.CloseBraceNotAligned"/>
-		<exclude name="Squiz.Arrays.ArrayDeclaration.KeyNotAligned"/>
-	</rule>
+	<rule ref="Squiz.Arrays.ArrayDeclaration.NoCommaAfterLast"/>
 
-	<!-- String formatting -->
+	<!-- Allow double quotes only when there is a variable inside -->
 	<rule ref="Squiz.Strings.DoubleQuoteUsage">
 		<exclude name="Squiz.Strings.DoubleQuoteUsage.ContainsVar"/>
 	</rule>
 
-	<!-- Operator spacing -->
 	<rule ref="Squiz.WhiteSpace.OperatorSpacing">
 		<properties>
-			<property name="ignoreNewlines" value="true"/>
-			<property name="ignoreSpacingBeforeAssignments" value="false"/>
+			<property name="ignoreNewlines" value="true" />
+			<property name="ignoreSpacingBeforeAssignments" value="false" />
 		</properties>
 	</rule>
 
-	<!-- Function and method documentation -->
+	<!-- Slevomat Coding Standards - @see https://github.com/slevomat/coding-standard -->
+	<rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses"/>
+	<rule ref="SlevomatCodingStandard.Namespaces.UnusedUses"/>
+	<rule ref="SlevomatCodingStandard.Exceptions.DisallowNonCapturingCatch"/>
+	<rule ref="SlevomatCodingStandard.Classes.UselessLateStaticBinding"/>
+	<rule ref="SlevomatCodingStandard.ControlStructures.DisallowContinueWithoutIntegerOperandInSwitch"/>
+	<rule ref="SlevomatCodingStandard.PHP.DisallowDirectMagicInvokeCall"/>
+	<rule ref="SlevomatCodingStandard.Functions.UselessParameterDefaultValue"/>
+	<rule ref="SlevomatCodingStandard.Namespaces.UselessAlias"/>
+	<rule ref="SlevomatCodingStandard.PHP.OptimizedFunctionsWithoutUnpacking"/>
+	<rule ref="SlevomatCodingStandard.Variables.DuplicateAssignmentToVariable"/>
+	<rule ref="SlevomatCodingStandard.Exceptions.DeadCatch"/>
+	<rule ref="SlevomatCodingStandard.Arrays.MultiLineArrayEndBracketPlacement"/>
+	<rule ref="SlevomatCodingStandard.Classes.DisallowMultiConstantDefinition"/>
+	<!--rule ref="SlevomatCodingStandard.Classes.DisallowMultiPropertyDefinition"/-->
+	<rule ref="SlevomatCodingStandard.Classes.TraitUseDeclaration"/>
+	<rule ref="SlevomatCodingStandard.Files.LineLength">
+		<properties>
+			<property name="lineLengthLimit"  value="300"/>
+		</properties>
+	</rule>
+	<rule ref="SlevomatCodingStandard.Namespaces.RequireOneNamespaceInFile"/>
+	<rule ref="SlevomatCodingStandard.Namespaces.NamespaceDeclaration"/>
+	<rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHintSpacing"/>
+	<rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint"/>
+	<rule ref="SlevomatCodingStandard.Namespaces.DisallowGroupUse"/>
+	<rule ref="SlevomatCodingStandard.Namespaces.MultipleUsesPerLine"/>
+	<rule ref="SlevomatCodingStandard.Commenting.DeprecatedAnnotationDeclaration"/>
+	<rule ref="SlevomatCodingStandard.Commenting.EmptyComment"/>
+	<rule ref="SlevomatCodingStandard.Functions.UnusedInheritedVariablePassedToClosure"/>
+	<!--<rule ref="SlevomatCodingStandard.Variables.UselessVariable"/>-->
+	<rule ref="SlevomatCodingStandard.Namespaces.NamespaceSpacing"/>
+	<rule ref="SlevomatCodingStandard.Namespaces.UseFromSameNamespace"/>
+	<rule ref="SlevomatCodingStandard.PHP.UselessSemicolon"/>
+	<rule ref="SlevomatCodingStandard.Namespaces.UseDoesNotStartWithBackslash"/>
+	<rule ref="SlevomatCodingStandard.Classes.PropertySpacing"/>
+	<rule ref="SlevomatCodingStandard.Classes.MethodSpacing"/>
+	<rule ref="SlevomatCodingStandard.Classes.ParentCallSpacing"/>
+	<rule ref="SlevomatCodingStandard.Classes.ConstantSpacing"/>
+	<rule ref="SlevomatCodingStandard.Arrays.SingleLineArrayWhitespace"/>
+	<rule ref="SlevomatCodingStandard.Classes.ClassMemberSpacing"/>
+	<rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing"/>
+	<rule ref="SlevomatCodingStandard.Commenting.DocCommentSpacing"/>
+	<rule ref="SlevomatCodingStandard.PHP.ReferenceSpacing"/>
+	<rule ref="SlevomatCodingStandard.Operators.NegationOperatorSpacing"/>
+	<rule ref="SlevomatCodingStandard.Operators.SpreadOperatorSpacing"/>
+	<rule ref="SlevomatCodingStandard.Arrays.DisallowImplicitArrayCreation"/>
+	<rule ref="SlevomatCodingStandard.Classes.ClassStructure">
+		<properties>
+			<property name="groups" type="array">
+				<element value="uses"/>
+				<element value="enum cases"/>
+				<element value="constants"/>
+				<element value="properties"/>
+				<element value="static properties"/>
+				<element value="static constructors"/>
+				<element value="constructor"/>
+				<element value="destructor"/>
+				<element value="magic methods"/>
+				<element value="all public methods"/>
+				<element value="all protected methods"/>
+				<element value="all private methods"/>
+			</property>
+		</properties>
+	</rule>
+	<rule ref="SlevomatCodingStandard.Functions.StrictCall">
+	</rule>
+	<rule ref="SlevomatCodingStandard.Operators.DisallowEqualOperators">
+	</rule>
+	<rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint">
+	</rule>
+	<rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint">
+	</rule>
+	<rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint">
+	</rule>
+	<rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingAnyTypeHint">
+	</rule>
+	<!--<rule ref="SlevomatCodingStandard.TypeHints.DisallowMixedTypeHint">
+	</rule>-->
+	<rule ref="SlevomatCodingStandard.Functions.DisallowEmptyFunction">
+	</rule>
+	<rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly">
+		<properties>
+			<property name="allowFullyQualifiedNameForCollidingClasses" value="true"/>
+		</properties>
+	</rule>
+	<!--<rule ref="SlevomatCodingStandard.ControlStructures.EarlyExit.EarlyExitNotUsed">
+	</rule>-->
+	<rule ref="SlevomatCodingStandard.ControlStructures.EarlyExit.UselessElseIf"/>
+	<rule ref="SlevomatCodingStandard.ControlStructures.EarlyExit.UselessElse">
+	</rule>
+	<!--<rule ref="SlevomatCodingStandard.Variables.DisallowSuperGlobalVariable">
+	</rule>-->
+	<rule ref="SlevomatCodingStandard.ControlStructures.UselessTernaryOperator">
+	</rule>
+	<rule ref="SlevomatCodingStandard.Variables.UnusedVariable">
+		<properties>
+			<property name="ignoreUnusedValuesWhenOnlyKeysAreUsedInForeach" value="true"/>
+		</properties>
+	</rule>
+	<!--<rule ref="SlevomatCodingStandard.PHP.UselessParentheses">
+	</rule>-->
+	<!--<rule ref="SlevomatCodingStandard.Functions.UnusedParameter">
+	</rule>-->
+	<rule ref="SlevomatCodingStandard.Functions.FunctionLength">
+		<properties>
+			<property name="maxLinesLength" value="250"/>
+		</properties>
+	</rule>
+
+	<!-- Documenting -->
 	<rule ref="Squiz.Commenting.FunctionComment">
 		<properties>
 			<property name="skipIfInheritdoc" value="true"/>
 		</properties>
-		<!-- Exclude overly strict formatting rules while keeping core documentation -->
-		<exclude name="Squiz.Commenting.FunctionComment.IncorrectParamVarName"/>
+		<exclude name="Squiz.Commenting.FunctionComment.IncorrectParamVarName"/> <!-- Can add back in once https://github.com/squizlabs/PHP_CodeSniffer/pull/3139 is fixed -->
 		<exclude name="Squiz.Commenting.FunctionComment.EmptyThrows"/>
 		<exclude name="Squiz.Commenting.FunctionComment.SpacingAfterParamType"/>
 		<exclude name="Squiz.Commenting.FunctionComment.ParamCommentFullStop"/>
 		<exclude name="Squiz.Commenting.FunctionComment.ParamCommentNotCapital"/>
 		<exclude name="Squiz.Commenting.FunctionComment.ThrowsNoFullStop"/>
 		<exclude name="Squiz.Commenting.FunctionComment.MissingParamComment"/>
-		<exclude name="Squiz.Commenting.FunctionComment.ParamNameNoMatch"/>
-		<exclude name="Squiz.Commenting.FunctionComment.SpacingAfterParamName"/>
 		<exclude name="Squiz.Commenting.FunctionComment.InvalidReturn"/>
-		<exclude name="Squiz.Commenting.FunctionComment.ThrowsNotCapital"/>
 	</rule>
 
-	<!-- Class documentation -->
-	<rule ref="Squiz.Commenting.ClassComment">
-		<exclude name="Squiz.Commenting.ClassComment.Missing"/>
-		<exclude name="Squiz.Commenting.ClassComment.SpacingAfter"/>
-		<exclude name="Squiz.Commenting.ClassComment.TagNotAllowed"/>
-	</rule>
-
-	<!-- Variable and unused code detection using Generic rules -->
-	<rule ref="Generic.CodeAnalysis.UnusedFunctionParameter"/>
-	<rule ref="Generic.CodeAnalysis.EmptyStatement"/>
-	<rule ref="Generic.CodeAnalysis.ForLoopShouldBeWhileLoop"/>
-	<rule ref="Generic.CodeAnalysis.ForLoopWithTestFunctionCall"/>
-	<rule ref="Generic.CodeAnalysis.JumbledIncrementer"/>
-	<rule ref="Generic.CodeAnalysis.UnconditionalIfStatement"/>
-	<rule ref="Generic.CodeAnalysis.UnnecessaryFinalModifier"/>
-	<rule ref="Generic.CodeAnalysis.UselessOverridingMethod"/>
-
-	<!-- Namespace and Use statement formatting with Generic/Squiz rules -->
-	<rule ref="PSR2.Namespaces.NamespaceDeclaration"/>
-	<rule ref="PSR2.Namespaces.UseDeclaration"/>
-	<rule ref="Generic.PHP.LowerCaseKeyword"/>
-	<rule ref="Generic.PHP.LowerCaseConstant"/>
-	<rule ref="Generic.PHP.LowerCaseType"/>
-
-	<!-- Control structure formatting (PSR-12 compatible) -->
-	<rule ref="Generic.ControlStructures.InlineControlStructure"/>
-	<rule ref="Squiz.ControlStructures.ControlSignature"/>
-	<!-- Allow elseif (PSR-12 standard) instead of forcing else if -->
-	<rule ref="Squiz.ControlStructures.ForEachLoopDeclaration"/>
-	<rule ref="Squiz.ControlStructures.ForLoopDeclaration"/>
-	<rule ref="Squiz.ControlStructures.LowercaseDeclaration"/>
-
-	<!-- Function and method formatting -->
-	<rule ref="Generic.Functions.FunctionCallArgumentSpacing"/>
-	<!-- Remove problematic brace rule that conflicts with PSR-12 -->
-	<rule ref="Squiz.Functions.FunctionDeclaration"/>
-	<rule ref="Squiz.Functions.FunctionDeclarationArgumentSpacing"/>
-	<rule ref="Squiz.Functions.LowercaseFunctionKeywords"/>
-
-	<!-- Class formatting -->
-	<rule ref="Generic.Classes.DuplicateClassName"/>
-	<rule ref="Squiz.Classes.ClassDeclaration"/>
-	<rule ref="Squiz.Classes.LowercaseClassKeywords"/>
-	<rule ref="Squiz.Classes.ValidClassName"/>
-
-	<!-- Whitespace and formatting -->
-	<rule ref="Generic.Formatting.DisallowMultipleStatements"/>
-	<rule ref="Generic.Formatting.SpaceAfterCast"/>
 	<rule ref="Generic.Formatting.SpaceAfterNot">
 		<properties>
-			<property name="spacing" value="0"/>
+			<property name="spacing" value="0" />
 		</properties>
 	</rule>
-	<rule ref="Squiz.WhiteSpace.CastSpacing"/>
-	<rule ref="Generic.WhiteSpace.LanguageConstructSpacing"/>
-	<rule ref="Squiz.WhiteSpace.LogicalOperatorSpacing"/>
-	<rule ref="Squiz.WhiteSpace.SemicolonSpacing"/>
-	<rule ref="Squiz.WhiteSpace.SuperfluousWhitespace"/>
 
-	<!-- PHP specific rules -->
-	<rule ref="Generic.PHP.DeprecatedFunctions"/>
-	<rule ref="Generic.PHP.DisallowAlternativePHPTags"/>
-	<rule ref="Generic.PHP.DisallowShortOpenTag"/>
-	<rule ref="Generic.PHP.ForbiddenFunctions"/>
-	<!-- Disable NoSilencedErrors as it's often needed in WordPress -->
-	<!-- <rule ref="Generic.PHP.NoSilencedErrors"/> -->
-
-	<!-- File formatting -->
-	<rule ref="Generic.Files.ByteOrderMark"/>
 	<rule ref="Generic.Files.LineLength">
+		<exclude-pattern>*/templates/*</exclude-pattern>
 		<properties>
 			<property name="lineLimit" value="150"/>
-			<property name="absoluteLineLimit" value="200"/>
-		</properties>
-		<!-- Exclude templates from line length checks -->
-		<exclude-pattern>*/templates/*</exclude-pattern>
-	</rule>
-	<rule ref="Generic.Files.LineEndings">
-		<properties>
-			<property name="eolChar" value="\n"/>
 		</properties>
 	</rule>
-	<rule ref="Generic.Files.EndFileNewline"/>
-
-	<!-- Security rules (relaxed for practical development) -->
-	<rule ref="Generic.Files.InlineHTML"/>
-	<rule ref="Squiz.PHP.DisallowMultipleAssignments"/>
-	<!-- Allow common debugging functions -->
-	<!-- <rule ref="Squiz.PHP.DiscouragedFunctions"/> -->
-	<rule ref="Squiz.PHP.Eval"/>
-	<rule ref="Squiz.PHP.GlobalKeyword"/>
-
-	<!-- Additional stability rules -->
-	<rule ref="Squiz.Scope.MemberVarScope"/>
-	<rule ref="Squiz.Scope.MethodScope"/>
-	<rule ref="Squiz.Scope.StaticThisUsage"/>
-
-	<!-- Exclude vendor directories and common problematic patterns -->
-	<exclude-pattern>*/vendor/*</exclude-pattern>
-	<exclude-pattern>*/node_modules/*</exclude-pattern>
-	<exclude-pattern>*.min.*</exclude-pattern>
-	<exclude-pattern>*/cache/*</exclude-pattern>
-	<exclude-pattern>*/tmp/*</exclude-pattern>
-	<exclude-pattern>*/temp/*</exclude-pattern>
+	<!-- exclude minified files -->
+	<!-- The following rule excludes more files than expected -->
+	<!--<exclude-pattern>*.min.*</exclude-pattern>-->
 </ruleset>

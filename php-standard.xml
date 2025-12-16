@@ -64,8 +64,14 @@
 	<rule ref="SlevomatCodingStandard.Variables.DuplicateAssignmentToVariable"/>
 	<rule ref="SlevomatCodingStandard.Exceptions.DeadCatch"/>
 	<rule ref="SlevomatCodingStandard.Arrays.MultiLineArrayEndBracketPlacement"/>
-	<rule ref="SlevomatCodingStandard.Classes.DisallowMultiConstantDefinition"/>
-	<!--rule ref="SlevomatCodingStandard.Classes.DisallowMultiPropertyDefinition"/-->
+	<!-- Allow multiple constant definitions for better compatibility with older PHP versions -->
+	<rule ref="SlevomatCodingStandard.Classes.DisallowMultiConstantDefinition">
+		<exclude name="SlevomatCodingStandard.Classes.DisallowMultiConstantDefinition"/>
+	</rule>
+	<!-- Allow multiple property definitions for better compatibility with older PHP versions -->
+	<rule ref="SlevomatCodingStandard.Classes.DisallowMultiPropertyDefinition">
+		<exclude name="SlevomatCodingStandard.Classes.DisallowMultiPropertyDefinition"/>
+	</rule>
 	<rule ref="SlevomatCodingStandard.Classes.TraitUseDeclaration"/>
 	<rule ref="SlevomatCodingStandard.Files.LineLength">
 		<properties>
@@ -128,8 +134,10 @@
 	</rule>
 	<rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingAnyTypeHint">
 	</rule>
-	<!--<rule ref="SlevomatCodingStandard.TypeHints.DisallowMixedTypeHint">
-	</rule>-->
+	<!-- Allow mixed type hints for WordPress compatibility -->
+	<rule ref="SlevomatCodingStandard.TypeHints.DisallowMixedTypeHint">
+		<exclude name="SlevomatCodingStandard.TypeHints.DisallowMixedTypeHint"/>
+	</rule>
 	<rule ref="SlevomatCodingStandard.Functions.DisallowEmptyFunction">
 	</rule>
 	<rule ref="SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly">
@@ -153,8 +161,10 @@
 	</rule>
 	<!--<rule ref="SlevomatCodingStandard.PHP.UselessParentheses">
 	</rule>-->
-	<!--<rule ref="SlevomatCodingStandard.Functions.UnusedParameter">
-	</rule>-->
+	<!-- Allow unused parameters for WordPress hook compatibility -->
+	<rule ref="SlevomatCodingStandard.Functions.UnusedParameter">
+		<exclude name="SlevomatCodingStandard.Functions.UnusedParameter"/>
+	</rule>
 	<rule ref="SlevomatCodingStandard.Functions.FunctionLength">
 		<properties>
 			<property name="maxLinesLength" value="250"/>

@@ -18,11 +18,15 @@
         "squizlabs/php_codesniffer": "^3.13",
         "sirbrillig/phpcs-variable-analysis": "^2.12",
         "dealerdirect/phpcodesniffer-composer-installer": "^1.1",
-        "slevomat/coding-standard": "^8.20.0"
+        "slevomat/coding-standard": "^8.20.0",
+        "phpstan/phpstan": "^2.0",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan-slevomat-coding-standard": "^1.0",
+        "phpstan/phpstan-strict-rules": "^2.0"
     },
     "extra": {
         "branch-alias": {
-            "dev-main": "1.0.x-dev"
+            "dev-main": "1.1.x-dev"
         }
     },
     "require-dev": {
@@ -31,23 +35,32 @@
     "bin": [
         "bin/phpcs.sh",
         "bin/phpcbf.sh",
-        "bin/phplint.sh"
+        "bin/phplint.sh",
+        "bin/phpstan.sh"
     ],
     "scripts": {
         "fix-slevomat-bug": "php bin/fix-slevomat-bug.php",
         "test": [
             "@test:lint",
             "@test:phpcs",
+            "@test:phpstan",
             "@test:phpunit"
         ],
         "test:lint": "phplint tests/ --no-cache",
         "test:phpcs": "phpcs tests/ --standard=php-standard.xml --exclude=Squiz.Commenting.FunctionComment",
+        "test:phpstan": "phpstan analyse --configuration=php-standard.neon",
         "test:phpunit": "phpunit",
-        "fix": "phpcbf tests/ --standard=php-standard.xml"
+        "fix": [
+            "@fix:phpcbf",
+            "@fix:phpstan"
+        ],
+        "fix:phpcbf": "phpcbf tests/ --standard=php-standard.xml",
+        "fix:phpstan": "phpstan analyse --configuration=php-standard.neon --fix"
     },
     "config": {
         "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "phpstan/extension-installer": true
         }
     }
 }

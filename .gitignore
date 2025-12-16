@@ -7,3 +7,5 @@ composer.lock
 .phplint-cache
 .phpunit.result.cache
 tests/fixtures/
+storage/
+.phpstan-result.cache

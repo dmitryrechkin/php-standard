@@ -1,0 +1,57 @@
+includes:
+    - vendor/phpstan/extension-installer/extension-installer.neon
+    - vendor/phpstan/phpstan-slevomat-coding-standard/extension.neon
+
+parameters:
+    tmpDir: ./storage/devtools/phpstan
+    # WordPress minimum PHP 7.4+ compatibility - Level 5 is good balance
+    level: 5
+    # paths to analyse - will be overridden by script
+    paths:
+        - src
+
+    reportUnmatchedIgnoredErrors: false
+
+    # Slevomat Coding Standard specific settings
+    slevomatCodingStandard:
+        ignoreLines:
+            - 'declare(strict_types=1);'  # Allow strict_types declarations
+            - '/**'                     # Ignore docblock starts
+            - '*/'                      # Ignore docblock ends
+
+    ignoreErrors:
+        # WordPress specific patterns that can't be easily fixed
+        - '#Access to an undefined property#'  # WordPress dynamic properties
+        - '#Call to an undefined method#'     # WordPress magic methods
+        - '#Call to static method.*on an unknown class#'  # WordPress factory patterns
+
+        # Plugin development specific allowances
+        - '#Variable \$.+ might not be defined#'          # WordPress hooks and filters
+        - '#Undefined variable: \$.+#'                   # WordPress global variables
+
+        # Slevomat specific rules we want to allow for compatibility
+        - '#SlevomatCodingStandard\.Variables\.UselessVariable#'  # Sometimes needed for hooks
+
+        # PHP 7.4 compatibility specific
+        - '#.*? expects callable.*? Callback given on line.*?#'   # Callback compatibility
+
+        # Third-party library issues
+        - '#Call to an undefined method PHPUnit\\Framework\\MockObject\\MockObject#'
+        - '#returns PHPUnit\\Framework\\MockObject\\MockObject#'
+
+        # WordPress action and filter hooks often pass unused parameters
+        - '#Parameter \$.+ is never used#'
+
+        # Array destructuring in foreach common in WordPress
+        - '#Foreach over array might not iterate over all values#'
+
+    # Check for missing return types but allow some flexibility for WordPress compatibility
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
+
+    # Enable some strict rules but keep WordPress compatibility
+    strictRules:
+        allRules: false
+        noVariableVariables: true
+        noImplicitWildcard: true
+        strictCalls: true

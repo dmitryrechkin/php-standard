@@ -14,14 +14,13 @@
     ],
     "require": {
         "php": ">=7.4",
-        "overtrue/phplint": "^3.4",
+        "overtrue/phplint": "^3.4|^9.0",
         "squizlabs/php_codesniffer": "^3.13",
         "sirbrillig/phpcs-variable-analysis": "^2.12",
         "dealerdirect/phpcodesniffer-composer-installer": "^1.1",
         "slevomat/coding-standard": "^8.20.0",
         "phpstan/phpstan": "^2.0",
         "phpstan/extension-installer": "^1.4",
-        "phpstan/phpstan-slevomat-coding-standard": "^1.0",
         "phpstan/phpstan-strict-rules": "^2.0"
     },
     "extra": {
@@ -39,6 +38,18 @@
         "bin/phpstan.sh"
     ],
     "scripts": {
+        "php-standard:analyse": "phpstan analyse src --configuration=php-standard.neon --memory-limit=1G",
+        "php-standard:check": [
+            "@php-standard:lint",
+            "@php-standard:phpcs",
+            "@php-standard:phpstan"
+        ],
+        "php-standard:fix": [
+            "phpcbf src --standard=php-standard.xml --report=code --cache"
+        ],
+        "php-standard:lint": "phplint src --no-cache",
+        "php-standard:phpcs": "phpcs src --standard=php-standard.xml --report=code --cache",
+        "php-standard:phpstan": "phpstan analyse src --configuration=php-standard.neon --memory-limit=1G",
         "fix-slevomat-bug": "php bin/fix-slevomat-bug.php",
         "test": [
             "@test:lint",

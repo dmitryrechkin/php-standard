@@ -2,6 +2,8 @@
 <ruleset name="DmitryRechkin">
 	<description>Coding standard based on PSR-12 with some additions.</description>
 
+	<!-- Set PHP version to 7.4 to prevent PHP 8+ type hints (mixed, union types) -->
+	<config name="php_version" value="70400"/>
 	<arg name="tab-width" value="4"/>
 
 	<!-- Include the whole PSR-12 standard -->
@@ -126,13 +128,30 @@
 	</rule>
 	<rule ref="SlevomatCodingStandard.Operators.DisallowEqualOperators">
 	</rule>
+	<!-- Enforce type hints but exclude PHP 8+ types (mixed, union) for PHP 7.4 compatibility -->
 	<rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint">
+		<properties>
+			<property name="enableMixedTypeHint" value="false"/>
+			<property name="enableUnionTypeHint" value="false"/>
+		</properties>
 	</rule>
 	<rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingAnyTypeHint">
+		<properties>
+			<property name="enableMixedTypeHint" value="false"/>
+			<property name="enableUnionTypeHint" value="false"/>
+		</properties>
 	</rule>
 	<rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint">
+		<properties>
+			<property name="enableMixedTypeHint" value="false"/>
+			<property name="enableUnionTypeHint" value="false"/>
+		</properties>
 	</rule>
 	<rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingAnyTypeHint">
+		<properties>
+			<property name="enableMixedTypeHint" value="false"/>
+			<property name="enableUnionTypeHint" value="false"/>
+		</properties>
 	</rule>
 	<!-- Allow mixed type hints for WordPress compatibility -->
 	<rule ref="SlevomatCodingStandard.TypeHints.DisallowMixedTypeHint">

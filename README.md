@@ -79,6 +79,7 @@ The `php-standard.xml` standard includes:
 - Variable analysis for unused variables
 - WordPress-compatible rule exclusions
 - Tab indentation (4 spaces)
+- **JavaScript/CSS exclusions** - `*.js`, `*.css`, and minified files are automatically excluded (use ESLint/Stylelint instead)
 
 ## Integration with Projects
 

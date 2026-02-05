@@ -8,6 +8,13 @@ parameters:
 
     reportUnmatchedIgnoredErrors: false
 
+    # Customize phpstan-strict-rules - disable rules that don't fit our coding style
+    strictRules:
+        # Allow empty() - it's a valid and useful construct for checking falsy values
+        disallowedEmpty: false
+        # Allow short ternary (?:) - useful for default values
+        disallowedShortTernary: false
+
     ignoreErrors:
         # WordPress specific patterns that can't be easily fixed
         - '#Access to an undefined property#'  # WordPress dynamic properties

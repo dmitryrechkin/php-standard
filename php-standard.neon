@@ -14,6 +14,10 @@ parameters:
         disallowedEmpty: false
         # Allow short ternary (?:) - useful for default values
         disallowedShortTernary: false
+        # Allow truthy/falsy checks in conditions (e.g., if ($object) instead of if ($object !== null))
+        booleansInConditions: false
+        # Allow defensive casts even when PHPDoc says type is already correct
+        uselessCast: false
 
     ignoreErrors:
         # WordPress specific patterns that can't be easily fixed
@@ -40,3 +44,26 @@ parameters:
 
         # Array destructuring in foreach common in WordPress
         - '#Foreach over array might not iterate over all values#'
+
+        # WordPress AJAX handlers use wp_send_json which exits - PHPStan doesn't know this
+        - '#Unreachable statement - code above always terminates#'
+
+        # Methods/properties may be used via WordPress hooks or kept for future use
+        - '#Method .+ is unused#'
+        - '#Property .+ is never read, only written#'
+        - '#Constant .+ is unused#'
+
+        # Defensive null coalescing is acceptable even when PHPDoc says value exists
+        - '#on left side of \?\? always exists and is not nullable#'
+        - '#Expression on left side of \?\? is not nullable#'
+
+        # PHPDoc type narrowing hints - defensive checks are acceptable
+        - '#Call to function .+ will always evaluate to#'
+        - '#Negated boolean expression is always#'
+        - '#is always (true|false)#'
+
+        # WP_CLI functions - stubs may not be available
+        - '#Function WP_CLI\\.+ not found#'
+
+        # Third-party plugin classes (Elementor, etc)
+        - '#on an unknown class Elementor#'

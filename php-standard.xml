@@ -83,7 +83,10 @@
 	<rule ref="SlevomatCodingStandard.Namespaces.RequireOneNamespaceInFile"/>
 	<rule ref="SlevomatCodingStandard.Namespaces.NamespaceDeclaration"/>
 	<rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHintSpacing"/>
-	<rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint"/>
+	<rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint">
+		<!-- Keep typed @var annotations: we document types in PHPDoc even when a native type exists. -->
+		<exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.UselessAnnotation"/>
+	</rule>
 	<rule ref="SlevomatCodingStandard.Namespaces.DisallowGroupUse"/>
 	<rule ref="SlevomatCodingStandard.Namespaces.MultipleUsesPerLine"/>
 	<rule ref="SlevomatCodingStandard.Commenting.DeprecatedAnnotationDeclaration"/>
@@ -101,7 +104,12 @@
 	<rule ref="SlevomatCodingStandard.Arrays.SingleLineArrayWhitespace"/>
 	<rule ref="SlevomatCodingStandard.Classes.ClassMemberSpacing"/>
 	<rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing"/>
-	<rule ref="SlevomatCodingStandard.Commenting.DocCommentSpacing"/>
+	<!-- Disabled: DocCommentSpacing's required blank-line counts oscillate with other
+	     commenting sniffs, so phpcbf can never converge (it reformats endlessly and then
+	     discards the whole file's fixes). Turning it off lets phpcbf auto-fix the rest.
+	     Re-enable with tuned linesCount* properties if a non-conflicting config is found. -->
+	<!-- <rule ref="SlevomatCodingStandard.Commenting.DocCommentSpacing"/> -->
+
 	<rule ref="SlevomatCodingStandard.PHP.ReferenceSpacing"/>
 	<rule ref="SlevomatCodingStandard.Operators.NegationOperatorSpacing"/>
 	<rule ref="SlevomatCodingStandard.Operators.SpreadOperatorSpacing"/>
@@ -198,6 +206,11 @@
 		<exclude name="Squiz.Commenting.FunctionComment.IncorrectParamVarName"/> <!-- Can add back in once https://github.com/squizlabs/PHP_CodeSniffer/pull/3139 is fixed -->
 		<exclude name="Squiz.Commenting.FunctionComment.EmptyThrows"/>
 		<exclude name="Squiz.Commenting.FunctionComment.SpacingAfterParamType"/>
+		<!-- Don't force column-alignment of @param descriptions: it conflicts with
+		     SlevomatCodingStandard.Commenting.DocCommentSpacing (the two reformat each
+		     other endlessly so phpcbf can never converge), and alignment churns on every
+		     signature change. A single space after the name is enough. -->
+		<exclude name="Squiz.Commenting.FunctionComment.SpacingAfterParamName"/>
 		<exclude name="Squiz.Commenting.FunctionComment.ParamCommentFullStop"/>
 		<exclude name="Squiz.Commenting.FunctionComment.ParamCommentNotCapital"/>
 		<exclude name="Squiz.Commenting.FunctionComment.ThrowsNoFullStop"/>

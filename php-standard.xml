@@ -199,9 +199,34 @@
 	</rule>
 
 	<!-- Documenting -->
+
+	<!-- @inheritDoc is forbidden: it sends the reader to the parent class to learn what a
+	     method does, and silently drifts when the parent signature changes. Every override
+	     restates the description in its own words instead.
+
+	     Note Squiz's skipIfInheritdoc property does NOT reject the annotation. It only
+	     controls whether that sniff skips its other checks, so the ban is enforced here.
+	     Two rules are needed: ForbiddenAnnotations catches the block form, ForbiddenComments
+	     the inline {@inheritdoc} spelling. -->
+	<rule ref="SlevomatCodingStandard.Commenting.ForbiddenAnnotations">
+		<properties>
+			<property name="forbiddenAnnotations" type="array">
+				<element value="@inheritDoc"/>
+				<element value="@inheritdoc"/>
+			</property>
+		</properties>
+	</rule>
+	<rule ref="SlevomatCodingStandard.Commenting.ForbiddenComments">
+		<properties>
+			<property name="forbiddenCommentPatterns" type="array">
+				<element value="~\{@inheritdoc\}~i"/>
+			</property>
+		</properties>
+	</rule>
+
 	<rule ref="Squiz.Commenting.FunctionComment">
 		<properties>
-			<property name="skipIfInheritdoc" value="true"/>
+			<property name="skipIfInheritdoc" value="false"/>
 		</properties>
 		<exclude name="Squiz.Commenting.FunctionComment.IncorrectParamVarName"/> <!-- Can add back in once https://github.com/squizlabs/PHP_CodeSniffer/pull/3139 is fixed -->
 		<exclude name="Squiz.Commenting.FunctionComment.EmptyThrows"/>
